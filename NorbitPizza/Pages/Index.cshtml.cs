@@ -1,20 +1,43 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NorbitPizza.Models;
+using NorbitPizza.Services;
 
 namespace NorbitPizza.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly PizzaService _pizzaService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public List<Pizza> Pizzas { get; set; } = new();
+        public List<string> Categories { get; set; } = new() { "all", "Classic", "Spicy", "Vegetarian", "Meat", "Sweet" };
+        public List<string> AvailableIngredients { get; set; } = new();
+
+        [BindProperty] public string? NewPizzaName { get; set; }
+        [BindProperty] public List<string> SelectedIngredients { get; set; } = new();
+
+        public IndexModel(PizzaService pizzaService)
         {
-            _logger = logger;
+            _pizzaService = pizzaService;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync(string category = "all")
         {
+            Pizzas = await _pizzaService.GetPizzasAsync(category);
+            AvailableIngredients = _pizzaService.GetAvailableIngredients();
+        }
 
+        public async Task<IActionResult> OnPostCreatePizzaAsync()
+        {
+            if (string.IsNullOrEmpty(NewPizzaName) || !SelectedIngredients.Any())
+            {
+                TempData["Error"] = "Заполните название и выберите ингредиенты";
+                return RedirectToPage();
+            }
+
+            await _pizzaService.CreateCustomPizzaAsync(NewPizzaName, SelectedIngredients);
+            TempData["Success"] = "Пицца успешно создана!";
+            return RedirectToPage();
         }
     }
 }
