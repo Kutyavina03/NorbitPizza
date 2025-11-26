@@ -57,7 +57,8 @@ namespace NorbitPizza.Services
                 Price = 400 + (ingredients.Count * 50),
                 IsCustom = true,
                 Category = "Custom",
-                ImageUrl = "/images/custom-pizza.jpg"
+                ImageUrl = "/images/custom-pizza.jpg",
+                Description = "Ваша собственная пицца"
             };
 
             _context.Pizzas.Add(pizza);

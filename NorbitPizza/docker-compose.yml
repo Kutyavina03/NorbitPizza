@@ -7,18 +7,31 @@ services:
       - "8082:8080"
     container_name: norbitpizza
     depends_on:
-      - db
+      - pizza_db
+      - order_db
 
-  db:
+  pizza_db:
     image: postgres:13
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: norbitpizza
+      POSTGRES_DB: norbit_pizzas
+    ports:
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pizza_data:/var/lib/postgresql/data
+
+  order_db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: norbit_orders
+    ports:
+      - "5433:5432"
+    volumes:
+      - order_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  pizza_data:
+  order_data:
