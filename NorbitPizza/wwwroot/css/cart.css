@@ -1,4 +1,8 @@
-﻿.cart-container {
+﻿h1,h2{
+    color:#9d18c4;
+}
+.cart-container {
+    
     display: flex;
     gap: 40px;
     max-width: 900px;
@@ -7,7 +11,7 @@
 }
 
 .cart-items-block, .user-info-block {
-    background: white;
+    background: black;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -22,7 +26,9 @@
     padding-bottom: 5px;
     border-bottom: 1px solid #eee;
 }
-
+.cart-item span{
+    color :#ba8ac0;
+}
 .qty-controls {
     display: flex;
     align-items: center;
@@ -33,14 +39,14 @@
         width: 25px;
         height: 25px;
         border: none;
-        background: #007bff;
+        background: #9d18c4;
         color: white;
         border-radius: 4px;
         cursor: pointer;
     }
 
 .remove-btn {
-    background: #dc3545;
+    background: #ed30dc;
     color: white;
     border: none;
     padding: 0 8px;
@@ -51,12 +57,19 @@
     .remove-btn:hover {
         background: #c82333;
     }
-
+label{
+    color: #ed30dc;
+}
+input {
+    color: white;
+    border: 2px solid pink !important;
+}
 .cart-total {
     font-weight: bold;
     margin-top: 15px;
     text-align: right;
     font-size: 1.2em;
+    color: pink;
 }
 
 .user-info-block label {
@@ -77,7 +90,7 @@
     margin-top: 15px;
     width: 100%;
     padding: 12px;
-    background: #28a745;
+    background: #9d18c4;
     color: white;
     border: none;
     border-radius: 6px;
@@ -86,14 +99,15 @@
 }
 
     .user-info-block button:hover {
-        background: #218838;
+        background: #ba8ac0;
+        ;
     }
 
 .back-link {
     display: block;
     text-align: center;
     margin: 20px 0;
-    color: #007bff;
+    color: #ba8ac0;
     text-decoration: none;
 }
 

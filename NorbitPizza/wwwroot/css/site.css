@@ -1,3 +1,6 @@
+*{
+    background-color:#000000;
+}
 html {
   font-size: 14px;
 }
@@ -13,19 +16,27 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #000000;
 }
 
+.text-violet{
+    color:violet;
+}
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+.footer container{
+    color:#6f289d;
 }

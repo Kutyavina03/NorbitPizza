@@ -63,7 +63,7 @@ namespace NorbitPizza.Services
                 Price = 580,
                 ImageUrl = "/images/pear-bluecheese.png",
                 Ingredients = new List<string> { "Груша", "Блю Чиз", "Моцарелла" },
-                Category = "Vegetarian"
+                Category = "Sweet"
             },
             new Pizza
             {

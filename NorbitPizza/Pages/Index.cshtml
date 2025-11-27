@@ -45,7 +45,7 @@
             <div class="pizza-card" data-category="@pizza.Category">
                 <img src="@pizza.ImageUrl" alt="@pizza.Name" onerror="this.src='/images/pizza-placeholder.jpg'">
                 <h3>@pizza.Name</h3>
-                <p>@pizza.Description</p>
+                <p class="info">@pizza.Description</p>
                 <p class="price">@pizza.Price руб.</p>
                 <p class="ingredients">@string.Join(", ", pizza.Ingredients)</p>
                 <button onclick="addToCart(@pizza.Id, '@pizza.Name', @pizza.Price, @pizza.IsCustom.ToString().ToLower())">

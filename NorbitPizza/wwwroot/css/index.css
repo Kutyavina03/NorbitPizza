@@ -7,23 +7,21 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f8f9fa;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 0 auto;
     padding: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #333;
+    color: #8434b4;
     margin-bottom: 30px;
 }
 
 .create-pizza {
-    background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -32,7 +30,7 @@ h1 {
 
     .create-pizza h2 {
         margin-bottom: 15px;
-        color: #333;
+        color: #8434b4;
     }
 
     .create-pizza input[type="text"] {
@@ -46,6 +44,7 @@ h1 {
 
 .ingredients {
     margin: 15px 0;
+    color:#8434b4;
 }
 
     .ingredients h4 {
@@ -57,9 +56,16 @@ h1 {
         margin: 5px 10px;
         cursor: pointer;
     }
-
+#newPizzaName{
+    color: white;
+    background: #8434b4;
+    border-color: #9642b5;
+}
+#newPizzaName::placeholder {
+    color: whitesmoke;
+}
 button {
-    background: #007bff;
+    background: #7244c6;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -69,7 +75,7 @@ button {
 }
 
     button:hover {
-        background: #0056b3;
+        background: #683eb5;
     }
 
 .filters {
@@ -81,27 +87,26 @@ button {
     display: inline-block;
     margin: 0 5px;
     padding: 8px 16px;
-    border: 1px solid #007bff;
+    border: 1px solid #7f55cb;
     border-radius: 5px;
     text-decoration: none;
-    color: #007bff;
-    background: white;
+    color: #eee;
+    background: #7244c6;
 }
 
     .filter-btn:hover {
-        background: #007bff;
+        background: #683eb5;
         color: white;
     }
 
 .pizzas {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(4, minmax(340px, 1fr));
     gap: 20px;
     margin: 20px 0;
 }
 
 .pizza-card {
-    background: white;
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 8px;
@@ -124,19 +129,26 @@ button {
     }
 
     .pizza-card h3 {
-        color: #333;
+        color: #8434b4;
         margin-bottom: 10px;
+    }
+
+    .pizza-card .info {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #b673b8;
+        margin: 10px 0;
     }
 
     .pizza-card .price {
         font-size: 1.2em;
         font-weight: bold;
-        color: #28a745;
+        color: #d836dd;
         margin: 10px 0;
     }
 
     .pizza-card .ingredients {
-        color: #666;
+        color: #7f55cb;
         font-size: 0.9em;
         margin: 10px 0;
     }
@@ -145,7 +157,7 @@ button {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: white;
+    background: black;
     border: 1px solid #ddd;
     padding: 15px;
     border-radius: 8px;
@@ -156,11 +168,11 @@ button {
 
     #cart h3 {
         margin-bottom: 10px;
-        color: #333;
+        color: #844dc5;
     }
 
 .go-to-cart-btn {
-    background: #007bff;
+    background: #7244c6;
     color: white;
     padding: 12px 20px;
     border-radius: 8px;
@@ -169,6 +181,7 @@ button {
 }
 
 .cart-item {
+    color:pink;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -178,8 +191,7 @@ button {
 }
 
     .cart-item button {
-        background: #dc3545;
-        color: white;
+        color: #571c62;
         border: none;
         padding: 2px 8px;
         border-radius: 3px;
@@ -192,6 +204,7 @@ button {
         }
 
 #total {
+    color: #9a509c;
     font-weight: bold;
     margin: 10px 0;
     text-align: center;
