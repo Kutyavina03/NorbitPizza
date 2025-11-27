@@ -10,7 +10,7 @@ namespace NorbitPizza.Pages
         private readonly PizzaService _pizzaService;
 
         public List<Pizza> Pizzas { get; set; } = new();
-        public List<string> Categories { get; set; } = new() { "all", "Classic", "Spicy", "Vegetarian", "Meat", "Sweet" };
+        public List<string> Categories { get; set; } = new() { "Все", "Классические", "Острые", "Вегетарианские", "Мясные", "Сладкие" };
         public List<string> AvailableIngredients { get; set; } = new();
 
         [BindProperty] public string? NewPizzaName { get; set; }
@@ -21,7 +21,7 @@ namespace NorbitPizza.Pages
             _pizzaService = pizzaService;
         }
 
-        public async Task OnGetAsync(string category = "all")
+        public async Task OnGetAsync(string category = "Все")
         {
             Pizzas = await _pizzaService.GetPizzasAsync(category);
             AvailableIngredients = _pizzaService.GetAvailableIngredients();

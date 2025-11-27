@@ -1,0 +1,100 @@
+﻿@* @page
+@model NorbitPizza.Pages.CartModel
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<h1>Корзина</h1>
+
+<div id="cart-page-items"></div>
+<div id="cart-page-total" style="font-weight:bold; margin-top:20px;"></div>
+
+<a asp-page="/Index">← Вернуться к покупкам</a>
+<button onclick="submitOrder()" style="margin-top:20px;">Оформить заказ</button>
+
+<form id="orderForm" method="post">
+    <input type="hidden" id="orderData" name="OrderData" />
+</form>
+<script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        function submitOrder() {
+        if (cart.length === 0) {
+            alert("Корзина пуста!");
+            return;
+        }
+
+        // Передаём корзину в скрытое поле
+        document.getElementById("orderData").value = JSON.stringify(cart);
+
+        // Отправляем POST на Cart.cshtml.cs → OnPost()
+        document.getElementById("orderForm").submit();
+    }
+    function renderCartPage() {
+        const container = document.getElementById('cart-page-items');
+        const total = document.getElementById('cart-page-total');
+
+        container.innerHTML = '';
+        let sum = 0;
+
+        cart.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = `${item.name} — ${item.price} руб. × ${item.quantity}`;
+            container.appendChild(div);
+            sum += item.price * item.quantity;
+        });
+
+        total.textContent = "Итого: " + sum + " руб.";
+    }
+
+    renderCartPage();
+</script> *@
+
+
+@page
+@model NorbitPizza.Pages.CartModel
+@{
+    ViewData["Title"] = "Корзина";
+}
+@section Scripts{
+    <script src="~/js/cart.js"></script>
+}
+@section Styles{
+    <link rel="stylesheet" href="~/css/cart.css" />
+}
+<h1>Корзина</h1>
+
+<div class="cart-container">
+    <!-- Список товаров -->
+    <div class="cart-items-block">
+        <h2>Ваши товары</h2>
+        <div id="cart-page-items"></div>
+        <div id="cart-page-total" class="cart-total"></div>
+        <div id="cart-items"></div>
+
+    </div>
+
+    <!-- Данные пользователя -->
+    <div class="user-info-block">
+        <h2>Данные для доставки</h2>
+        <form id="orderForm" method="post">
+            <input type="hidden" id="orderData" name="OrderData" />
+
+            <label>Имя</label>
+            <input type="text" id="userName" name="UserName" required />
+
+            <label>Телефон</label>
+            <input type="text" id="userPhone" name="UserPhone" required />
+
+            <label>Адрес</label>
+            <input type="text" id="userAddress" name="UserAddress" required />
+
+            <button type="button" onclick="submitOrder()">Оформить заказ</button>
+        </form>
+    </div>
+</div>
+
+<a asp-page="/Index" class="back-link">← Вернуться к покупкам</a>
+
+
+
+

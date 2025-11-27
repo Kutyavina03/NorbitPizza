@@ -15,13 +15,68 @@ namespace NorbitPizza.Services
 
         private readonly List<Pizza> _initialPizzas = new()
         {
-            new Pizza { Id = 1, Name = "Маргарита", Description = "Классическая итальянская пицца", Price = 450, ImageUrl = "/images/margarita.jpg", Ingredients = new List<string> { "Томатный соус", "Моцарелла", "Базилик" }, Category = "Classic" },
-            new Pizza { Id = 2, Name = "Пепперони", Description = "Острая пицца с колбасками", Price = 550, ImageUrl = "/images/pepperoni.jpg", Ingredients = new List<string> { "Томатный соус", "Моцарелла", "Пепперони" }, Category = "Spicy" },
-            new Pizza { Id = 3, Name = "Гавайская", Description = "С ветчиной и ананасами", Price = 520, ImageUrl = "/images/hawaiian.jpg", Ingredients = new List<string> { "Томатный соус", "Моцарелла", "Ветчина", "Ананасы" }, Category = "Sweet" },
-            new Pizza { Id = 4, Name = "Четыре сыра", Description = "Нежная пицца с четырьмя видами сыра", Price = 600, ImageUrl = "/images/4cheese.jpg", Ingredients = new List<string> { "Моцарелла", "Горгонзола", "Пармезан", "Фета" }, Category = "Vegetarian" },
-            new Pizza { Id = 5, Name = "Мясная", Description = "Для настоящих мясоедов", Price = 650, ImageUrl = "/images/meat.jpg", Ingredients = new List<string> { "Томатный соус", "Моцарелла", "Пепперони", "Ветчина", "Бекон" }, Category = "Meat" },
-            new Pizza { Id = 6, Name = "Вегетарианская", Description = "Полезно и вкусно", Price = 480, ImageUrl = "/images/vegetarian.jpg", Ingredients = new List<string> { "Томатный соус", "Моцарелла", "Грибы", "Перец", "Оливки", "Лук" }, Category = "Vegetarian" }
-        };
+            new Pizza
+            {
+                Id = 1,
+                Name = "Пицца Жюльен",
+                Description = "Запечённое куриное филе, шампиньоны, лук, сливочно-грибной соус, моцарелла и петрушка",
+                Price = 520,
+                ImageUrl = "/images/julien.png",
+                Ingredients = new List<string> { "Куриное филе", "Шампиньоны", "Лук", "Сливочно-грибной соус", "Моцарелла", "Петрушка" },
+                Category = "Мясные"
+            },
+            new Pizza
+            {
+                Id = 2,
+                Name = "Пицца 4 сыра",
+                Description = "Сыр Рассольный, Моцарелла, Гауда, Маасдам, Чеддер и соус Пармеджано",
+                Price = 600,
+                ImageUrl = "/images/4cheese.png",
+                Ingredients = new List<string> { "Сыр Рассольный", "Моцарелла", "Гауда", "Маасдам", "Чеддер", "Соус Пармеджано" },
+                Category = "Вегетарианские"
+            },
+            new Pizza
+            {
+                Id = 3,
+                Name = "Пицца Пепперони",
+                Description = "Ветчина, нежный сыр Моцарелла и колбаса Пепперони. Вкусная, пикантная пицца для любителей остренького",
+                Price = 550,
+                ImageUrl = "/images/pepperoni.png",
+                Ingredients = new List<string> { "Ветчина", "Моцарелла", "Пепперони" },
+                Category = "Острые"
+            },
+            new Pizza
+            {
+                Id = 4,
+                Name = "Пицца Итальянская",
+                Description = "Сочная ветчина, нежный сыр Моцарелла, свежие шампиньоны и ароматная зелень петрушки под фирменным соусом из мякоти томатов",
+                Price = 500,
+                ImageUrl = "/images/italian.png",
+                Ingredients = new List<string> { "Ветчина", "Моцарелла", "Шампиньоны", "Петрушка", "Соус из томатов" },
+                Category = "Классические"
+            },
+            new Pizza
+            {
+                Id = 5,
+                Name = "Пицца Груша-Блю Чиз",
+                Description = "Сочетание нежной груши и сливочного вкуса Блю Чиз под тянущимся сыром Моцарелла",
+                Price = 580,
+                ImageUrl = "/images/pear-bluecheese.png",
+                Ingredients = new List<string> { "Груша", "Блю Чиз", "Моцарелла" },
+                Category = "Вегетарианские"
+            },
+            new Pizza
+            {
+                Id = 6,
+                Name = "Пицца Мясное трио",
+                Description = "Нежная копченая грудка, сочный карбонад и ароматный бекон с соусом, сыром, томатом и маринованным огурчиком",
+                Price = 650,
+                ImageUrl = "/images/meat.png",
+                Ingredients = new List<string> { "Копченая грудка", "Карбонад", "Бекон", "Соус", "Сыр", "Томат", "Маринованный огурчик" },
+                Category = "Мясные"
+            }
+};
+
 
         public PizzaService(ApplicationDbContext context)
         {
@@ -43,7 +98,7 @@ namespace NorbitPizza.Services
         public async Task<List<Pizza>> GetPizzasAsync(string category = null)
         {
             var query = _context.Pizzas.AsQueryable();
-            if (!string.IsNullOrEmpty(category) && category != "all")
+            if (!string.IsNullOrEmpty(category) && category != "Все")
                 query = query.Where(p => p.Category == category);
             return await query.ToListAsync();
         }

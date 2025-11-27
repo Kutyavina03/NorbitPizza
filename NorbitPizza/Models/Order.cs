@@ -3,22 +3,22 @@
     public class Order
     {
         public int Id { get; set; }
-        public string CustomerName { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
-        public string Phone { get; set; } = string.Empty;
-        public decimal TotalPrice { get; set; }
-        public List<OrderItem> Items { get; set; } = new List<OrderItem>();
-        public DateTime OrderDate { get; set; } = DateTime.UtcNow;
-        public string Status { get; set; } = "Pending";
+        public string CustomerName { get; set; }
+        public string CustomerPhone { get; set; }
+        public string CustomerAddress { get; set; }
+        public int TotalPrice { get; set; }
+        public List<OrderItem> Items { get; set; }
     }
 
     public class OrderItem
     {
         public int Id { get; set; }
-        public string PizzaName { get; set; } = string.Empty;
-        public decimal Price { get; set; }
-        public int Quantity { get; set; } = 1;
-        public List<string> CustomIngredients { get; set; } = new List<string>();
-        public bool IsCustomPizza { get; set; }
+        public int PizzaId { get; set; }
+        public string Name { get; set; }  
+        public int Price { get; set; }
+        public int Quantity { get; set; }
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
+
     }
 }

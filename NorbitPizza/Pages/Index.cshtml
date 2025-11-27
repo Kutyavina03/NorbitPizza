@@ -3,7 +3,12 @@
 @{
     ViewData["Title"] = "Норбит Пицца";
 }
-
+@section Scripts {
+    <script src="~/js/index.js"></script>
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/index.css" />
+}
 <div class="container">
     <h1>Норбит Пицца</h1>
 
@@ -23,7 +28,7 @@
                 }
             </div>
 
-            <button type="submit">Создать пиццу</button>
+            <button type="submit" onclick="alert(`Мы получили и вскоре рассмотрим ваш рецепт`)">Создать пиццу</button>
         </form>
     </div>
 
@@ -55,316 +60,157 @@
     <h3>Корзина</h3>
     <div id="cart-items"></div>
     <div id="total">Итого: 0 руб.</div>
-    <button type="submit" onclick="checkout()">Заказать</button>
+    <a asp-page="/Cart" class="go-to-cart-btn">Перейти в корзину</a>
 </div>
 
 <script>
-    let cart = [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    updateCart();
     let pizzas = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Pizzas));
 
     function addToCart(id, name, price, isCustom) {
+    const existing = cart.find(item => item.id === id && item.isCustom === isCustom);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
         cart.push({ id, name, price, quantity: 1, isCustom });
-        updateCart();
     }
 
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
+    }
+
+
     function updateCart() {
-        const items = document.getElementById('cart-items');
-        const total = document.getElementById('total');
+         const items = document.getElementById('cart-items');
+    const total = document.getElementById('total');
 
-        items.innerHTML = '';
-        let sum = 0;
+    items.innerHTML = '';
+    let sum = 0;
 
-        cart.forEach((item, index) => {
-            sum += item.price * item.quantity;
+    cart.forEach((item, index) => {
+        sum += item.price * item.quantity;
 
-            const div = document.createElement('div');
-            div.className = 'cart-item';
-            div.textContent = `${item.name} - ${item.price} руб.`;
+    const div = document.createElement('div');
+    div.className = 'cart-item';
 
-            const btn = document.createElement('button');
-            btn.textContent = '×';
-            btn.onclick = () => removeFromCart(index);
 
-            div.appendChild(btn);
-            items.appendChild(div);
-        });
+    div.innerHTML = `${item.name} — ${item.price} руб. × `;
 
-        total.textContent = `Итого: ${sum} руб.`;
+
+    const minus = document.createElement('button');
+    minus.textContent = '−';
+        minus.onclick = () => {
+            if (item.quantity > 1) {
+        item.quantity--;
+            } else {
+        cart.splice(index, 1);
+            }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
+        };
+    div.appendChild(minus);
+
+
+    const qty = document.createElement('span');
+    qty.textContent = ` ${item.quantity} `;
+    div.appendChild(qty);
+
+
+    const plus = document.createElement('button');
+    plus.textContent = '+';
+        plus.onclick = () => {
+        item.quantity++;
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
+        };
+    div.appendChild(plus);
+
+
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = '×';
+        removeBtn.onclick = () => {
+        cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCart();
+        };
+    div.appendChild(removeBtn);
+
+    items.appendChild(div);
+    });
+
+    total.textContent = `Итого: ${sum} руб.`;
     }
 
     function removeFromCart(index) {
         cart.splice(index, 1);
-        updateCart();
-    }
-
-    function checkout() {
-        if (cart.length === 0) return alert('Корзина пуста!');
-
-        const name = prompt('Ваше имя:');
-        const address = prompt('Адрес:');
-        const phone = prompt('Телефон:');
-
-        if (!name || !address || !phone) return alert('Заполните все поля!');
-
-        alert(`Заказ оформлен!\nИмя: ${name}\nАдрес: ${address}\nТелефон: ${phone}\nСумма: ${cart.reduce((sum, item) => sum + item.price, 0)} руб.`);
-        cart = [];
-        updateCart();
+    updateCart();
     }
 
     function createPizza(event) {
         event.preventDefault();
-        const name = document.getElementById('newPizzaName').value;
+    const name = document.getElementById('newPizzaName').value;
         const selected = [...document.querySelectorAll('.create-pizza input[type=checkbox]:checked')].map(i => i.value);
-        if (!name) return alert('Введите название пиццы!');
+    if (!name) return alert('Введите название пиццы!');
 
-        const pizza = {
-            id: Date.now(),
-            name: name,
-            price: 500,
-            ingredients: selected,
-            isCustom: true,
-            imageUrl: '/images/pizza-placeholder.jpg',
-            description: 'Ваша собственная пицца',
-            Category: 'Custom'
+    const pizza = {
+        id: Date.now(),
+    name: name,
+    price: 500,
+    ingredients: selected,
+    isCustom: true,
+    imageUrl: '/images/pizza-placeholder.jpg',
+    description: 'Ваша собственная пицца',
+    Category: 'Custom'
         };
 
-        pizzas.push(pizza);
-        renderPizzas();
-        document.getElementById('createPizzaForm').reset();
-        return false;
+    pizzas.push(pizza);
+    renderPizzas();
+    document.getElementById('createPizzaForm').reset();
+    return false;
     }
 
     function renderPizzas() {
         const container = document.getElementById('pizzasContainer');
-        container.innerHTML = '';
+    container.innerHTML = '';
 
         pizzas.forEach(pizza => {
             const card = document.createElement('div');
-            card.className = 'pizza-card';
-            card.dataset.category = pizza.Category;
+    card.className = 'pizza-card';
+    card.dataset.category = pizza.Category;
 
-            card.innerHTML = `
-                <img src="${pizza.imageUrl}" alt="${pizza.name}" onerror="this.src='/images/pizza-placeholder.jpg'">
-                <h3>${pizza.name}</h3>
-                <p>${pizza.description}</p>
-                <p class="price">${pizza.price} руб.</p>
-                <p class="ingredients">${pizza.ingredients.join(', ')}</p>
-            `;
+    card.innerHTML = `
+    <img src="${pizza.imageUrl}" alt="${pizza.name}" onerror="this.src='/images/pizza-placeholder.jpg'">
+        <h3>${pizza.name}</h3>
+        <p>${pizza.description}</p>
+        <p class="price">${pizza.price} руб.</p>
+        <p class="ingredients">${pizza.ingredients.join(', ')}</p>
+        `;
 
-            const btn = document.createElement('button');
-            btn.textContent = 'В корзину';
+        const btn = document.createElement('button');
+        btn.textContent = 'В корзину';
             btn.onclick = () => addToCart(pizza.id, pizza.name, pizza.price, pizza.isCustom);
-            card.appendChild(btn);
+        card.appendChild(btn);
 
-            container.appendChild(card);
+        container.appendChild(card);
         });
     }
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const category = btn.dataset.category;
-            document.querySelectorAll('.pizza-card').forEach(card => {
-                if (category === 'All' || card.dataset.category === category) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const category = btn.dataset.category;
+                document.querySelectorAll('.pizza-card').forEach(card => {
+                    if (category === 'Все' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
-        });
     });
 
 </script>
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f8f9fa;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 30px;
-    }
-
-    .create-pizza {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        margin-bottom: 30px;
-    }
-
-        .create-pizza h2 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .create-pizza input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-    .ingredients {
-        margin: 15px 0;
-    }
-
-        .ingredients h4 {
-            margin-bottom: 10px;
-        }
-
-        .ingredients label {
-            display: inline-block;
-            margin: 5px 10px;
-            cursor: pointer;
-        }
-
-    button {
-        background: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-    .filters {
-        margin: 20px 0;
-        text-align: center;
-    }
-
-    .filter-btn {
-        display: inline-block;
-        margin: 0 5px;
-        padding: 8px 16px;
-        border: 1px solid #007bff;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #007bff;
-        background: white;
-    }
-
-        .filter-btn:hover {
-            background: #007bff;
-            color: white;
-        }
-
-    .pizzas {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        margin: 20px 0;
-    }
-
-    .pizza-card {
-        background: white;
-        border: 1px solid #ddd;
-        padding: 15px;
-        border-radius: 8px;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        transition: transform 0.2s;
-    }
-
-        .pizza-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        .pizza-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-
-        .pizza-card h3 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .pizza-card .price {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #28a745;
-            margin: 10px 0;
-        }
-
-        .pizza-card .ingredients {
-            color: #666;
-            font-size: 0.9em;
-            margin: 10px 0;
-        }
-
-    #cart {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: white;
-        border: 1px solid #ddd;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        min-width: 250px;
-        z-index: 1000;
-    }
-
-        #cart h3 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-    .cart-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 5px 0;
-        padding: 5px;
-        border-bottom: 1px solid #eee;
-    }
-
-        .cart-item button {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 2px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-            .cart-item button:hover {
-                background: #c82333;
-            }
-
-    #total {
-        font-weight: bold;
-        margin: 10px 0;
-        text-align: center;
-        font-size: 1.1em;
-    }
-</style>
