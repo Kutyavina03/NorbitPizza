@@ -203,7 +203,7 @@
                 e.preventDefault();
                 const category = btn.dataset.category;
                 document.querySelectorAll('.pizza-card').forEach(card => {
-                    if (category === 'Все' || card.dataset.category === category) {
+                    if (category === 'All' || card.dataset.category === category) {
                         card.style.display = 'block';
                     } else {
                         card.style.display = 'none';

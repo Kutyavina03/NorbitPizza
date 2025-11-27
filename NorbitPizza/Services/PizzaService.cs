@@ -23,7 +23,7 @@ namespace NorbitPizza.Services
                 Price = 520,
                 ImageUrl = "/images/julien.png",
                 Ingredients = new List<string> { "Куриное филе", "Шампиньоны", "Лук", "Сливочно-грибной соус", "Моцарелла", "Петрушка" },
-                Category = "Мясные"
+                Category = "Meat"
             },
             new Pizza
             {
@@ -33,7 +33,7 @@ namespace NorbitPizza.Services
                 Price = 600,
                 ImageUrl = "/images/4cheese.png",
                 Ingredients = new List<string> { "Сыр Рассольный", "Моцарелла", "Гауда", "Маасдам", "Чеддер", "Соус Пармеджано" },
-                Category = "Вегетарианские"
+                Category = "Vegetarian"
             },
             new Pizza
             {
@@ -43,7 +43,7 @@ namespace NorbitPizza.Services
                 Price = 550,
                 ImageUrl = "/images/pepperoni.png",
                 Ingredients = new List<string> { "Ветчина", "Моцарелла", "Пепперони" },
-                Category = "Острые"
+                Category = "Spicy"
             },
             new Pizza
             {
@@ -53,7 +53,7 @@ namespace NorbitPizza.Services
                 Price = 500,
                 ImageUrl = "/images/italian.png",
                 Ingredients = new List<string> { "Ветчина", "Моцарелла", "Шампиньоны", "Петрушка", "Соус из томатов" },
-                Category = "Классические"
+                Category = "Classic"
             },
             new Pizza
             {
@@ -63,7 +63,7 @@ namespace NorbitPizza.Services
                 Price = 580,
                 ImageUrl = "/images/pear-bluecheese.png",
                 Ingredients = new List<string> { "Груша", "Блю Чиз", "Моцарелла" },
-                Category = "Вегетарианские"
+                Category = "Vegetarian"
             },
             new Pizza
             {
@@ -73,7 +73,7 @@ namespace NorbitPizza.Services
                 Price = 650,
                 ImageUrl = "/images/meat.png",
                 Ingredients = new List<string> { "Копченая грудка", "Карбонад", "Бекон", "Соус", "Сыр", "Томат", "Маринованный огурчик" },
-                Category = "Мясные"
+                Category = "Meat"
             }
 };
 
@@ -98,7 +98,7 @@ namespace NorbitPizza.Services
         public async Task<List<Pizza>> GetPizzasAsync(string category = null)
         {
             var query = _context.Pizzas.AsQueryable();
-            if (!string.IsNullOrEmpty(category) && category != "Все")
+            if (!string.IsNullOrEmpty(category) && category != "All")
                 query = query.Where(p => p.Category == category);
             return await query.ToListAsync();
         }
